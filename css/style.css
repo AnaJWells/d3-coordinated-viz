@@ -1,16 +1,18 @@
 .map {
 	border: 3px solid #999;
-	margin: 10px 0 0 20px;
+	margin: 5px 0 0 20px;
 }
 
-.countries {
+/*
+.regions {
 	fill: #FFF;
 	stroke: #CCC;
 	stroke-width: 2px;
 }
+*/
 
-.regions {
-	stroke: #000;
+.countries {
+	stroke: #FFF;
 	stroke-width: 0.5px;
 	stroke-linecap: round;
 }
@@ -27,12 +29,12 @@
 
 .chart {
 	float: right;
-	margin: 7px 20px 0 0;
+	margin: 7px 18px 0 0;
 }
 
 .chartTitle {
 	font-family: sans-serif;
-	font-size: 1.5em;
+	font-size: 1.2 em;
 	font-weight: bold;
 }
 
