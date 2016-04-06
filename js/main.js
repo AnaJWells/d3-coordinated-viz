@@ -26,7 +26,7 @@ function setMap () {
   // using queue.js
   var width = window.innerWidth * 0.6;
   var height = 400;
-
+  //var title = d3.select("title").append("p").text("Agricultural Indicators");
   // map container
   var map = d3.select("body")
     .append("svg")
@@ -36,42 +36,41 @@ function setMap () {
 
   // alberts projection
   var projection = d3.geo.cylindricalEqualArea()
-    //.center([0, 0]) //long and lat in the center of the plane
+    .center([0, 0]) //long and lat in the center of the plane
     .rotate([-10])  //long and lat -2,0
     //.parallels([29.5, 45.5])  //the standard parallels; one array tangent; two secant
-    .scale(140)  //scales * distance [bwn points]
+    .scale(140)  //scales * distance [bwn points] (1 << 12) / 2 / Math.PI
     .translate([width/2, height/2])
     .precision(.1);
 
   var path = d3.geo.path()
     .projection(projection);
 
+
   d3_queue.queue()
     .defer(d3.csv, "data/Lab2.csv") //load attributes from csv
-    .defer(d3.json, "data/WorldCountries.topojson") //load contries spatial data
-
+    .defer(d3.json, "data/WorldCountries.topojson") //load contry spatial data
     .await(callback);
 
   function callback(error, csvData, world){
-
+    if (error) {
+      console.log(error); //send error to log
+    }
+    else {
       setGraticule(map, path);
       // convert to geojson format
-      var world = topojson.feature(world, world.objects.WorldCountries).features;
-            //console.log(error);
-            //console.log(csvData);
-            //console.log(world);
-
-
+      var world =topojson.feature(world, world.objects.WorldCountries).features;
            // join csv with spatial data
+
       world = joinData(world, csvData);
            //create the color scale
       var colorScale = makeColorScale(csvData);
       //
       // add enumeration units to the map
       setEnumerationUnits(world, map, path, colorScale);
-      setChart(csvData, colorScale);
-      createDropDown(csvData);
-
+      setChart(csvData, colorScale);    //error NaN
+      //createDropDown(csvData);
+    }
   };  // end callBack
 
 };  // end setMap
@@ -80,7 +79,6 @@ function setMap () {
 // define setGraticule function - graticule generator
 function setGraticule(map, path) {
   var graticule = d3.geo.graticule()
-      //.extent([[-120 - 45, 38 - 45], [-120 + 45, 38 + 45]])
       .step([15, 15]);
 
 //background graticule
@@ -102,30 +100,30 @@ function setGraticule(map, path) {
 // funtion to join data from the csv and spatial data
 function joinData(world, csvData){
   // for each country of the world
-
+  //console.log ('size json, ', world.length, 'and size csv, ' ,csvData.length);
   for (var i =0; i < csvData.length; i++) {
      var csvCountry = csvData[i];
-     //console.log (csvCountry);
+
      var csvKey = csvCountry.CountryID;  //country ID - key
-     //console.log(world.length);
+
      // find the correspondent country for the csvKey
      for (var a=0; a<world.length; a++) {
        var worldProperties  = world[a].properties; //props of json worldMap
        var worldKeys = worldProperties.adm0_a3;  // key of worldMap
-       //console.log (worldKeys);
-       if (csvKey == worldKeys) {
-         //perform the join; assign csv attributes to geojson
-         //console.log(csvKey,"and ,",worldKeys );
 
+       if (csvKey == worldKeys) {
+         //perform the join; join csv attributes to geojson
+         //console.log(csvKey,"and ,",worldKeys );
+         // for each one of the attributes in the csv file
          attrArray.forEach(function(attribute) {
-           // strings to numbers; this changes null to NaN
+           // change each string value to number; this changes null to NaN
            var val = parseFloat(csvCountry[attribute]);
 
            if (val && val != NaN){
              worldProperties[attribute] = val;
            };
 
-         });
+         });  //end of attrArray
        };
 
      }; //end of finding the key
@@ -149,6 +147,7 @@ function setEnumerationUnits(world, map, path, colorScale){
         //return colorScale(d.properties[expressed]) //
         return choropleth(d.properties, colorScale)
      })
+     // visual feedback
  		 .on("mouseover", function(d){
  			  highlight(d.properties);
  		 })
@@ -188,12 +187,13 @@ function makeColorScale(data){
 		"#980043"
 	];
 
+  /*
   //  **** ONE OPTION - NATURAL BREAKS:
 	//create color scale generator
 	var colorScale = d3.scale.threshold()
 		.range(colorClasses);
 
-	//array the values of the expressed attribute
+	//array the values of the specific expressed attribute
 	var domainArray = [];
 	for (var i=0; i<data.length; i++){
     ///////////////////////////////
@@ -208,6 +208,7 @@ function makeColorScale(data){
 	//ckmeans clustering algorithm
   //to create natural breaks  -- ss is in statistics library
 	var clusters = ss.ckmeans(domainArray, 5);
+
 	//reset domain array to cluster minimums
 	domainArray = clusters.map(function(d){
 		return d3.min(d);
@@ -215,12 +216,13 @@ function makeColorScale(data){
 
 	//remove first value from domain array to create class breakpoints
 	domainArray.shift();
+
 	//assign array of last 4 cluster minimums as domain
 	colorScale.domain(domainArray);
+  */
 
-  /*
   //OPTION 2
-  //create color scale generator
+  //EQUAL INTERVAL COLOR SCALE GENERATOR
   var colorScale = d3.scale.quantile()
       .range(colorClasses);
 
@@ -231,10 +233,11 @@ function makeColorScale(data){
   ];
     //assign two-value array as scale domain
   colorScale.domain(minmax);
-  console.log(colorScale.quantiles());
-  */
+
+  //console.log(colorScale.quantiles());
+
   // OPTION 3 - QUANTILES
-  //create color scale generator
+  //QUANTILE color SCALE GENERATOR
   /*
   var colorScale = d3.scale.quantile()
       .range(colorClasses);
@@ -249,7 +252,7 @@ function makeColorScale(data){
   };
     //assign array of expressed values as scale domain
     colorScale.domain(domainArray);
-      */
+  */
 
 
   return colorScale;
@@ -259,13 +262,16 @@ function makeColorScale(data){
 //function to highlight enumeration units and bars
 function highlight(props){
 	//change stroke
-	var selected = d3.selectAll("." + props.adm0_a3)
-		.style({
-			"stroke": "blue",
-			"stroke-width": "2"
-		});
+  var val = props[expressed];
+  if (val && val != NaN){
+	  var selected = d3.selectAll("." + props.adm0_a3)
+	  	.style({
+	  		"stroke": "blue",
+	  		"stroke-width": "2"
+	  	});
+	  setLabel(props);
+  }
 
-	setLabel(props);
 };  // end of highlight
 
 
@@ -339,9 +345,10 @@ function setLabel(props){
 		})
 		.html(labelAttribute);
 
-	var regionName = infolabel.append("div")
+	var countryName = infolabel.append("div")
 		.attr("class", "labelname")
 		.html(props.name);
+
 };  // end setLabel
 
 
@@ -370,10 +377,11 @@ function setChart(csvData, colorScale){
 		.enter()
 		.append("rect")
 		.sort(function(a, b){   //sorts the classes bars
+      //console.log (a[expressed], b[expressed]);
 			return b[expressed]-a[expressed]
 		})
 		.attr("class", function(d){
-			return "bars " + d.adm0_a3;
+			return "bars " + d.CountryID; //bars for countries
 		})
 		.attr("width", chartInnerWidth / csvData.length - 1)
 		.on("mouseover", highlight)
@@ -409,21 +417,27 @@ function setChart(csvData, colorScale){
 		.attr("transform", translate);
 
 	//set bar positions, heights, and colors
-	updateChart(bars, csvData.length, colorScale);
+	updateChart(bars, csvData.length, colorScale);   //error NaN
 };  // end setChart
 
 //function to position, size, and color bars in chart
 function updateChart(bars, n, colorScale){
 	//position bars
 
-  var allAttributes = ["Rural population (% of total pop)",
-                  "Agricultural land (% of land area)","tres","cuatro","cinco","seis"];
+  var allAttributes = ["Rural population (% of total pop)", "Agricultural land (% of land area)",
+  "Arable land (% of land area)",
+  "Average precipitation in depth (mm per year)",
+  "Employment in agriculture (% of total employment)",
+  "Forest area (% of land area)"];
 
+
+  var theTitle = allAttributes[0];  // title for first attribute
+  //console.log(theTitle);
   bars.attr("x", function(d, i){
 			return i * (chartInnerWidth / n) + leftPadding;
 		})
 		//size/resize bars
-		.attr("height", function(d, i){
+		.attr("height", function(d, i){   //error NaN
 			return 463 - yScale(parseFloat(d[expressed]));
 		})
 		.attr("y", function(d, i){
@@ -434,15 +448,22 @@ function updateChart(bars, n, colorScale){
 			return choropleth(d, colorScale);
 		});
 
-	//add text to chart title
+	//add the text-title to the chart title
 	var chartTitle = d3.select(".chartTitle")
-		.text(expressed + " per country");  //.text (exp);
+		.text(theTitle);  //.text (exp);
 }; //end updateChart
 
 //////////////////////
 //////////////////////
 //function to create a dropdown menu for attribute selection
 function createDropDown(csvData){
+
+  var allAttributes = ["Rural population (% of total pop)", "Agricultural land (% of land area)",
+  "Arable land (% of land area)",
+  "Average precipitation in depth (mm per year)",
+  "Employment in agriculture (% of total employment)",
+  "Forest area (% of land area)"];
+
 	//add select element
 	var dropdown = d3.select("body")
 		.append("select")
@@ -469,11 +490,13 @@ function createDropDown(csvData){
 //dropdown change listener handler
 function changeAttribute(attribute, csvData){
 	//change the expressed attribute
-  console.log('hola!!');
+
 	expressed = attribute;
+  console.log(attrArray.indexOf(expressed));
+
 
   // var expressed = attrArray[0];
-	//recreate the color scale
+	//remake the color scale
 
 	var colorScale = makeColorScale(csvData);
 

@@ -1,0 +1,288 @@
+cca6 <- cca(bio6 ~ P+BD+pH+Nitrate, env6)
+anova(cca6)
+plot(cca6, xlim=c(-3,3), ylim=c(-2,2))
+cca6 <- cca(bio6 ~ Rate+SMC+P+BD+pH+Nitrate, env6)
+anova(cca6)
+plot(cca6, xlim=c(-3,3), ylim=c(-2,2))
+cca6 <- cca(bio6 ~ Rate+SMC+P2+BD+pH+Nitrate, env6)
+anova(cca6)
+plot(cca6, xlim=c(-3,3), ylim=c(-2,2))
+summary(cca6)
+env6
+env6 <- read.table(file.choose(),header=T)
+env6
+cca6 <- cca(bio6 ~ Rate+SMC+P+BD+pH+Nitrate, env6)
+anova(cca6)
+cca6 <- cca(bio6 ~ Rate+SMC+BD+pH+Nitrate, env6)
+anova(cca6)
+cca6 <- cca(bio6 ~ SMC+P+BD+pH+Nitrate, env6)
+anova(cca6)
+cca6 <- cca(bio6 ~ Rate+SMC+BD+pH+Nitrate, env6)
+anova(cca6)
+cca6 <- cca(bio6 ~ Rate+P+BD+pH+Nitrate, env6)
+anova(cca6)
+sp <- read.table(file.choose(),header=T)
+sp
+sp <- read.table(file.choose(),header=T)
+sp
+envsp <- read.table(file.choose(),header=T)
+envsp
+arana <- cca(sp, envsp)
+anova(arana)
+summary(arana)
+envsp <- envsp[-1]
+envsp
+arana <- cca(sp, spenv)
+arana <- cca(sp, envsp)
+anova(arana)
+summary(arana)
+plot(arana)
+sp <- sp[-1]
+arana <- cca(sp, envsp)
+anova (arana)
+plot (arana)
+plot(arana)
+summary (arana)
+library(vegan)
+spp <- read.table(file.choose(),header=T)#
+env.sp <- read.table(file.choose(),header=T)
+spp <- spp[-1]
+env.sp <- env.sp[-1]
+arana <- cca (spp, env.sp)
+anova(arona)
+anova(arana)
+summary(arana)
+(+ 2 3)
+sum(2, 3)
+spp <- read.table(file.choose(),header=T)
+spp
+library(vegan)
+n <- 1:100 ; y <- lgamma(n+1)
+x <- (1/2) * log(2 * pi) + (n+ .5)* log(n) - n#
+plot(x,y)
+x <- 0.3 # starting value#
+for (i in 1:4){#
+    x <- x+1#
+   cat("iteration = ", i,"x=",x,"\n")#
+}
+x <- .4 #starting value#
+while (x^2 <90)#
+{#
+  cat("x=",x,"\n")#
+P.M.E.Altham, University of Cambridge 7#
+  x <- x+.9#
+ }
+x <- .4 #starting value#
+while (x^2 <90)#
+{#
+  cat("x=",x,"\n")#
+  x <- x+.9#
+ }
+mkdir practice
+x <- c(7.82,8.00,7.95)   #"c" means "combine"#
+#
+# a slightly quicker way is to use scan( try help(scan))#
+x <- scan()
+x
+x <- scan()
+x
+x <- scan(,"")
+x
+demo(graphics)
+bigdata
+library(bigdata)
+list(x=0, y=0)
+x
+y
+x <- scan(,"")
+x
+y
+y <- scan(,"")
+list(x=0,y=0)
+x
+y
+q()
+x <- scan()
+y <- scan()
+data1 <- scan("weld", list(x=0,y=0))
+x <- scan()
+y <- scan()
+x <- scan()
+data1 <- scan("weld", list(x=0,y=0))
+list(x=0,y=0)
+x
+y
+data1
+data1 <- list(x=0, y=0)
+data1
+data1$x
+data1$x <- x
+data1$y <- y
+hist(x)
+summary(x)
+plot(x,y)
+teeny<-lm(y~x)
+teeny
+fvi <- teeny$fitted.values
+fvi
+anova(teeny)#
+names(teeny)
+teeny$coefficients
+par(mfrow=c(2,1)) # to have the plots in 2 rows, 1 column#
+plot(x,fv1)#
+plot(x,y)
+plot(x, fvi)
+abline(teeny)
+Y <- cbind(y,fvi)
+par(mfrow=c(1,1))
+matplot(x,Y,type="pl")
+res <- teeny$residuals#
+plot(x,res)
+xx<- x*x#
+teeny2 <- lm(y~x +xx ) # there’s bound to be a slicker way to do this#
+summary(teeny2)#
+#
+#This gives us the correlation matrix of the parameter estimates.#
+summary(teeny2, cor=T)
+summary(teeny)
+vcov(teeny2) # for comparison, the corresponding covariance matrix.#
+fv2 <- teeny2$fitted.values#
+plot(x,y)#
+lines(x,fv2,lty=2)
+.Rhistory
+type .Rhistory
+.Rdata
+extract(42°44’ N, -89°45’W)
+extract(42°44’, -89°45')
+help (extract)
+pnorm(24,21,5)
+qnorm(10,21,5)
+qnorm(0.1,21,5)
+pnorm(42.56, 50, 5.68)
+1-0.095
+pnorm(47.5, 44.8, 5.68)
+pnorm(50, 44.8, 5.68)
+50*1.05
+pnorm(52.5, 44.8, 5.68)
+qnorm(0.025)
+qnorm(0.10)
+qnorm(0.05)
+pt(0.5, def=17)
+pt(0.3, 17, lower.Tail=FALSE)
+help(pt)
+pt(2.3, df = 21)
+pt(0.5, df=17)
+1-0.68
+1- pt(2.24, df=21)
+qt(0.5, df=17)
+qt(0.5, df=17, lower.tail=FALSE)
+pt(0.2, df=17)
+pt(0.1, df=17)
+pt(0.05, df=17)
+75/40.13
+library(leaps)
+library(MASS)
+library(leaps)
+attach(mydata)
+library(gdata)
+help(read.xls)
+??read.xls
+mydata = read.xls("proddiv.xls")
+source("/Users/anawells/Documents/Files Ana/biomass data 06-09 (backup feb)/biomass.R")
+mydata = read.xls(
+)
+mydat = read.xls("/Users/anawells/Documents/Files Ana/Pper 2-current versions/proddiv.xls")
+??read.xls
+library(gdata)
+mydat = read.xls("/Users/anawells/Documents/Files Ana/Pper 2-current versions/proddiv.xls")
+x <= c(4,8,3,5,1,10,6,2,9,7)
+x = c(4,8,3,5,1,10,6,2,9,7)
+x
+mean(x)
+sample(5)
+one <- sample(x, 10, replace=T)
+one
+dos <- sample(x, 10, replace=T)
+dos
+rnorm(25,5)
+data <- round(rnorm(100, 5, 3))
+data
+tres <- sample(data, replace=T)
+tres
+[4<9]
+length(tres)
+uno
+one
+length(one[one<2])
+length(one[one<7])
+[one<6]
+one<7
+length(one<6)
+one[one<7]
+mean(one[one<7])
+apply (one, function(x) x^2)
+apply (one, 1, function(x) x^2)
+apply (one, 2, function(x) x^2)
+sapply (one, function(x) x^2)
+lapply (one, function(x) x^2)
+ana <- lapply (one, function(x) x^2)
+ana
+resamples <- lapply(1:20, function(i)#
+sample(data, replace = T))
+sapply(resamples, mean)
+mymean <- sapply(resamples, mean)
+mean(data)
+sd(data)
+sqrt(var(r.mean))
+sqrt(var(mymean))
+sqrt(var(data))
+hist(mymean)
+hist(data)
+hist(mymean)
+breaks = seq(1.5, 5.5, by=0.5)
+breaks
+percentiles ?
+()
+percentiles(breaks)
+q(help)
+help(q)
+help(quantiles)
+??quantiles
+quantile(breaks)
+quantile(breaks, 0.2)
+quantile(breaks, probs = c(0.2, 0.4, 0.6, 0.8, 1))
+getwd()#
+#
+path = "/Users/anawells/Documents/GIScert/webdir/d3-coordinated-viz/data/"#
+setwd(path)#
+getwd()
+SD <- read.table("Lab2.csv", header = TRUE)#
+summary(SD)
+length(SD)
+dim(SD)
+one = SD[2,]
+one
+one = SD[1,]
+one
+one = SD[0,]
+one
+SD[,1]
+SD <- read.table("Lab2.txt", header = TRUE)
+SD <- read.table("lab2.txt", header = TRUE)
+SD
+dim(SD)
+rural <- SD[,3]
+rural
+rural <- SD[,4]
+rural
+hist(rural)
+rural[2]
+esti = rural[2]
+esti
+dim(rural)
+length(rural)
+rural[5]
+summary(SD)
+rural
+summary(rural)
+box(rural)
