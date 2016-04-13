@@ -34,7 +34,7 @@ footer {
 }
 
 .chart {
-  	top: 95px;
+  top: 95px;
 	border: medium solid #999;
 	float: right;
 	margin: 10px 20px 0 0;
@@ -52,7 +52,7 @@ footer {
 
 .chartFrame {
 	fill: none;
-	stroke: none
+	stroke: none;
 	stroke-width: 3px;
 	shape-rendering: crispEdges;
 }

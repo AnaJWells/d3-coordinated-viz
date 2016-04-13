@@ -41,8 +41,8 @@ function setMap () {
     .attr("height", height);
 
 
-  //var projection = d3.geo.homolosine()
   /*
+  var projection = d3.geo.homolosine()
   var projection = d3.geo.interrupt(d3.geo.homolosine.raw) //
 
   //.center([0, 0]) //long and lat in the center of the plane
@@ -232,6 +232,7 @@ function highlight(props){
 	  	.style({
 	  		"stroke": "yellow",
 	  		"stroke-width": "2"
+
 	  	});
 	  setLabel(props);
   }
@@ -279,8 +280,7 @@ function dehighlight(props){
 			"stroke-width": function(){
 				return getStyle(this, "stroke-width")
 			}
-      //"stroke": "#FFF",
-			//"stroke-width": "0.75"
+
 		});
 
 	function getStyle(element, styleName){
@@ -325,10 +325,25 @@ function moveLabel(){
 };  // end moveLabel
 
 
+// determines the number of null data in the csv file
+function numbNulls( csvData, exp )  {
+  var count = 0;
+  for (var i =0; i < csvData.length; i++) {
+     var csvCountry = csvData[i];
+     var isEmpty = csvCountry[exp];
+
+     if (isEmpty === "null"){
+       count++;
+     };
+   }
+   return count;
+};
 
 ////////////
 //function to create coordinated bar chart
 function setChart(csvData, colorScale){
+
+  var denom = csvData.length - numbNulls( csvData, expressed);
 
   //create a second svg element to hold the bar chart
   var chart = d3.select("body")
@@ -357,7 +372,7 @@ function setChart(csvData, colorScale){
 		.attr("class", function(d){
 			return "bar " + d.CountryID; //bars for countries
 		})
-		.attr("width", chartInnerWidth / csvData.length - 1)
+		.attr("width", chartInnerWidth / denom - 1)
 		.on("mouseover", highlight)
 		.on("mouseout", dehighlight)
 		.on("mousemove", moveLabel);
@@ -405,18 +420,21 @@ function updateChart(bars, csvData, colorScale){
       .range([463, 0]);
   */
 
+  var newDenom = csvData.length - numbNulls( csvData, expressed);
+
   //console.log (yScale (90));
   bars.attr("x", function(d, i){
-			return i * (chartInnerWidth / csvData.length) + leftPadding;
+
+			return i * (chartInnerWidth / newDenom) + leftPadding;
 		})
 		//size/resize bars
 		.attr("height", function(d, i){   //error NaN
          //var val = d[expressed];
          if (d[expressed] && d[expressed] != NaN){
-              console.log('yes');
+
               return 463 - yScale(parseFloat(d[expressed]));
-         }
-         else {console.log("nonono")};
+         };
+
 		})
 		.attr("y", function(d, i){
 			return yScale(parseFloat(d[expressed])) + topBottomPadding;  ////
@@ -430,25 +448,6 @@ function updateChart(bars, csvData, colorScale){
 	//add the text-title to the chart title
 	 var chartTitle = d3.select(".chartTitle")
 		 .text(theTitle);  //.text (expressed);
-
-/*
-
-var yScale = d3.scale.linear()
-    .domain([0, d3.max(csvData, function(d) {
-            return parseFloat(d[expressed]);
-          })])
-    .range([463, 0]);
-
-
-         //create vertical axis generator
-   var yAxis = d3.svg.axis()
-     .scale(yScale)
-     .orient("left");
-
-  //svg.selectAll("g.yScale.axis")
-    // .call(yAxis);
-
-*/
 
 
 }; //end updateChart
