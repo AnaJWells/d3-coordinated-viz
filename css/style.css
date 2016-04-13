@@ -5,36 +5,36 @@
 
 h1 {
     color: gray;
-    font-family: sans-serif;;
-    font-size: "25";
+    font-family: sans-serif;
+    font-size: "20";
 }
 
-/*
-.regions {
-	fill: #FFF;
-	stroke: #CCC;
-	stroke-width: 2px;
+footer {
+    display: block;
+		position:absolute;
+    bottom:0px;
+    height: 60px;
 }
-*/
 
 .countries {
 	stroke: #FFF;
-	stroke-width: 0.5px;
+	stroke-width: 0.75px;
 	stroke-linecap: round;
 }
 
 .gratBackground {
-	fill: #D5E3FF;
+	/*fill: #D5E3FF;  */
+	fill: #222;
 }
 
 .gratLines {
 	fill: none;
-	stroke: #999;
+	stroke: #FFF;
 	stroke-width: 1px;
 }
 
 .chart {
-	background-color: rgba(128,128,128,.2);
+  	top: 95px;
 	border: medium solid #999;
 	float: right;
 	margin: 10px 20px 0 0;
@@ -42,7 +42,7 @@ h1 {
 
 .chartTitle {
 	font-family: sans-serif;
-	font-size: 1.2 em;
+	font-size: 1em;
 	font-weight: bold;
 }
 
@@ -75,11 +75,12 @@ h1 {
 
 .dropdown {
 	position: absolute;
-	top: 45px;
-	left: 30px;
+	width: 220px;
+	top: 150px;
+	left: 23px;
 	z-index: 10;
 	font-family: sans-serif;
-	font-size: 1em;
+	font-size: .8em;
 	font-weight: normal;
 	padding: 2px;
 	border: 1px solid #999;
@@ -94,6 +95,7 @@ option {
 	position: absolute;
 	height: 50px;
 	min-width: 100px;
+	z-index: 10;
 	color: #fff;
 	background-color: #000;
 	border: solid thin #fff;
@@ -101,7 +103,7 @@ option {
 	top: -75px;
 }
 
-.infolabel h1 {
+.infolabel h2 {
 	margin: 0 20px 0 0;
 	padding: 0;
 	display: inline-block;
